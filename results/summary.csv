@@ -1,0 +1,4 @@
+Scheme,DesignFaults,CoordinationViolations,MissingRequiredRelay,MinFiniteMargin_s,MaxPrimaryTripDelay_s,NoFaultNuisanceCases,ValidationSelective_pct,FaultSelective_pct,BreakerFailurePasses,BreakerFailureCases
+Conventional 51/51N,7200,10,1,0.24549870480312,17.1514150925199,3,75.5555555555556,70.3703703703704,4,12
+Directional 67/67N,7200,10,1,0.24549870480312,17.1514150925199,0,100,100,12,12
+DER-coordinated 67/67N + 51V,7200,0,0,0.253392338663327,10.7281459350291,0,100,100,12,12

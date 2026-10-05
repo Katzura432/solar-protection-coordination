@@ -1,0 +1,12 @@
+PASS: balanced fault current agrees with independent Thevenin calculation (<1e-6 relative error).
+PASS: AG fault agrees with independent sequence-network calculation (<1e-6 relative error).
+PASS: IEC normal-inverse numerical checkpoint and below-pickup behavior.
+PASS: nodal KCL and 1.20 pu inverter current limit across all design cases.
+PASS: improved primary sensitivity and 0.25 s coordination margin across all 7200 design faults.
+PASS: improved sampled faults, independent validation, no-fault profiles and primary-breaker failures.
+PASS: disabled transfer-trip tests expose sustained PV contribution rather than claiming fault clearance.
+PASS: source backup clears the sensitive remote fault when B2 and B3 both fail.
+PASS: every Simulink measurement matches the independent circuit solve, including delayed topology feedback.
+PASS: Simulink relay and breaker times agree with event-driven reference within two 1 ms steps.
+PASS: all Simulink measurement and relay output values are finite.
+PASS: six additional saved-model scenarios cover breaker failure, conventional sympathetic trip, directional selectivity, no-fault export, source-zone isolation and disabled transfer trip.

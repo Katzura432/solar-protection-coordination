@@ -1,0 +1,56 @@
+{
+  "matlab": "25.2.0.2998904 (R2025b)",
+  "seed": 2.0261004E+7,
+  "VLL_V": 11000,
+  "pvCurrentLimit_pu": 1.2,
+  "designScenarios": 7200,
+  "dynamicScenariosPerScheme": 570,
+  "independentValidationScenarios": 180,
+  "requiredCTI_s": 0.25,
+  "breakerDelay_s": 0.05,
+  "maxDesignKCLResidual_A": 8.7397010676011917E-11,
+  "schemes": [
+    {
+      "scheme": "Conventional 51/51N",
+      "designFaults": 7200,
+      "coordinationViolations": 10,
+      "missingRequiredPrimaryOrBackup": 1,
+      "minimumFiniteCoordinationMargin_s": 0.24549870480311992,
+      "maximumDesignPrimaryTripDelay_s": 17.151415092519894,
+      "validationFaults": 180,
+      "validationSelective": 136,
+      "healthyProfiles": 15,
+      "healthyNuisanceCases": 3,
+      "breakerFailureCases": 12,
+      "breakerFailureSelective": 4
+    },
+    {
+      "scheme": "Directional 67/67N",
+      "designFaults": 7200,
+      "coordinationViolations": 10,
+      "missingRequiredPrimaryOrBackup": 1,
+      "minimumFiniteCoordinationMargin_s": 0.24549870480311992,
+      "maximumDesignPrimaryTripDelay_s": 17.151415092519894,
+      "validationFaults": 180,
+      "validationSelective": 180,
+      "healthyProfiles": 15,
+      "healthyNuisanceCases": 0,
+      "breakerFailureCases": 12,
+      "breakerFailureSelective": 12
+    },
+    {
+      "scheme": "DER-coordinated 67/67N + 51V",
+      "designFaults": 7200,
+      "coordinationViolations": 0,
+      "missingRequiredPrimaryOrBackup": 0,
+      "minimumFiniteCoordinationMargin_s": 0.25339233866332694,
+      "maximumDesignPrimaryTripDelay_s": 10.728145935029142,
+      "validationFaults": 180,
+      "validationSelective": 180,
+      "healthyProfiles": 15,
+      "healthyNuisanceCases": 0,
+      "breakerFailureCases": 12,
+      "breakerFailureSelective": 12
+    }
+  ]
+}

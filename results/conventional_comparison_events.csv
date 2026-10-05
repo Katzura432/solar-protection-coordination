@@ -1,0 +1,6 @@
+Time_s,Event
+0.680979142028639,R3 trip command
+0.730979142028639,B3 opens
+0.790979142028639,PV intertie opens after direct transfer trip
+0.935881453310288,R2 trip command
+0.985881453310289,B2 opens
