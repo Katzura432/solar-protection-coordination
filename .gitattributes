@@ -1,0 +1,2 @@
+# Preserve the native formatting of generated SVG path data.
+docs/diagrams/figures/*.svg -whitespace

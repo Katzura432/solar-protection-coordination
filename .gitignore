@@ -4,3 +4,4 @@ slprj/
 *.autosave
 *.log
 .DS_Store
+docs/diagrams/__pycache__/

@@ -126,3 +126,11 @@ The report separates design-envelope results from independent validation. All sc
 - [NREL: inverter-based DER fault characteristics](https://doi.org/10.2172/971441)
 
 This is a simulation-based portfolio study. Its inverter, measurements, and relay polarization are simplified; it does not establish field performance or standards compliance.
+
+## Architecture diagrams
+
+![Project architecture](docs/diagrams/figures/architecture_overview.png)
+
+See the [architecture and implementation gallery](docs/ARCHITECTURE.md) for
+the detailed model/control structure and electrical topology
+diagrams, source mappings, scope boundaries, editable definitions, and PNG/SVG figures.

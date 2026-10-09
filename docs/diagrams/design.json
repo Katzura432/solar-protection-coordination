@@ -1,0 +1,412 @@
+{
+  "project": "solar-protection-coordination",
+  "scope": "11 kV RMS/phasor feeder and custom relay/breaker simulation; no switching-level inverter, physical relay implementation or FPGA RTL.",
+  "sources": [
+    {
+      "path": "src/study_config.m",
+      "contains": [
+        "c.parent=[0 1 2 1]",
+        "c.child=[1 2 3 4]",
+        "c.pvBus=3"
+      ]
+    },
+    {
+      "path": "src/build_protection_model.m",
+      "contains": [
+        "ProtectionNetwork",
+        "ProtectionRelay",
+        "ProtectionBreakers",
+        "Topology feedback"
+      ]
+    },
+    {
+      "path": "src/ProtectionRelay.m",
+      "contains": [
+        "obj.Progress=zeros(1,4)"
+      ]
+    },
+    {
+      "path": "src/network_solve.m",
+      "contains": []
+    },
+    {
+      "path": "src/coordinate_settings.m",
+      "contains": []
+    },
+    {
+      "path": "src/ProtectionBreakers.m",
+      "contains": []
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "architecture_overview",
+      "title": "Solar feeder protection — project architecture",
+      "subtitle": "Settings design, live protection behavior and independent validation",
+      "scope": "Four protected sections; three protection schemes; physical field certification is outside scope.",
+      "nodes": [
+        {
+          "id": "config",
+          "x": 3,
+          "y": 51,
+          "label": "Feeder + scenario config\n11 kV network / PV levels\nFaults and equipment failures",
+          "kind": "artifact"
+        },
+        {
+          "id": "settings",
+          "x": 36,
+          "y": 51,
+          "label": "Protection coordination\n7,200 design fault cases\nPickup, direction and TMS",
+          "kind": "control"
+        },
+        {
+          "id": "scheme",
+          "x": 69,
+          "y": 51,
+          "label": "Select protection scheme\nConventional / directional /\nDER coordinated",
+          "kind": "control"
+        },
+        {
+          "id": "network",
+          "x": 3,
+          "y": 30,
+          "label": "Live electrical network\nThree-phase nodal phasors\nCurrent-limited bus-3 PV",
+          "kind": "model"
+        },
+        {
+          "id": "relays",
+          "x": 36,
+          "y": 30,
+          "label": "Four relay instances\nPhase A/B/C + residual\nInverse-time accumulators",
+          "kind": "control"
+        },
+        {
+          "id": "breakers",
+          "x": 69,
+          "y": 30,
+          "label": "Breaker / PV intertie logic\nPrimary failure + backup\nDelayed transfer trip",
+          "kind": "control"
+        },
+        {
+          "id": "verify",
+          "x": 36,
+          "y": 9,
+          "label": "Independent validation\n180 randomized fault cases\nEvent-driven reference checks",
+          "kind": "implemented"
+        },
+        {
+          "id": "reports",
+          "x": 69,
+          "y": 9,
+          "label": "Results and evidence\nSettings / TCC / timing\nCSV, MAT and reports",
+          "kind": "artifact"
+        }
+      ],
+      "edges": [
+        {
+          "from": "config",
+          "to": "settings",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "settings",
+          "to": "scheme",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "scheme",
+          "to": "relays",
+          "label": "",
+          "kind": "control"
+        },
+        {
+          "from": "config",
+          "to": "network",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "network",
+          "to": "relays",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "relays",
+          "to": "breakers",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "breakers",
+          "to": "network",
+          "label": "Topology feedback",
+          "kind": "control",
+          "points": [
+            [
+              83,
+              29.5
+            ],
+            [
+              83,
+              26
+            ],
+            [
+              17,
+              26
+            ],
+            [
+              17,
+              29.5
+            ]
+          ],
+          "label_xy": [
+            50,
+            26
+          ]
+        },
+        {
+          "from": "relays",
+          "to": "verify",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "verify",
+          "to": "reports",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "breakers",
+          "to": "reports",
+          "label": "",
+          "kind": "data"
+        }
+      ]
+    },
+    {
+      "id": "model_structure",
+      "title": "Solar protection — Simulink closed-loop structure",
+      "subtitle": "Actual MATLAB System blocks and delayed network topology feedback",
+      "scope": "dt = 1 ms; protection equations and breaker states run live inside the native Simulink model.",
+      "nodes": [
+        {
+          "id": "input",
+          "x": 3,
+          "y": 51,
+          "label": "Time + topology inputs\nDigital Clock / concatenate\nBreaker / PV intertie states",
+          "kind": "model"
+        },
+        {
+          "id": "network",
+          "x": 36,
+          "y": 51,
+          "label": "ProtectionNetwork\nnetwork_solve()\nPacked electrical measurements",
+          "kind": "model"
+        },
+        {
+          "id": "relays",
+          "x": 69,
+          "y": 51,
+          "label": "ProtectionRelay x 4\nRelayIndex = 1..4\nFour inverse-time channels each",
+          "kind": "control"
+        },
+        {
+          "id": "trip",
+          "x": 69,
+          "y": 30,
+          "label": "Trip commands selector\nRelay log and status\nFour breaker trip requests",
+          "kind": "control"
+        },
+        {
+          "id": "breakers",
+          "x": 69,
+          "y": 9,
+          "label": "ProtectionBreakers\n50 ms feeder opening delay\nPV trip: 20 + 40 ms",
+          "kind": "control"
+        },
+        {
+          "id": "delay",
+          "x": 36,
+          "y": 9,
+          "label": "Topology feedback Unit Delay\nInitial five closed states\nFeeder + PV breaker status",
+          "kind": "control"
+        },
+        {
+          "id": "logs",
+          "x": 3,
+          "y": 30,
+          "label": "Measurement / relay /\nbreaker workspace logs\nBreaker-status Scope",
+          "kind": "artifact"
+        }
+      ],
+      "edges": [
+        {
+          "from": "input",
+          "to": "network",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "network",
+          "to": "relays",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "relays",
+          "to": "trip",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "trip",
+          "to": "breakers",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "breakers",
+          "to": "delay",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "delay",
+          "to": "input",
+          "label": "",
+          "kind": "control",
+          "points": [
+            [
+              35.5,
+              15.5
+            ],
+            [
+              33,
+              15.5
+            ],
+            [
+              33,
+              57.5
+            ],
+            [
+              31.5,
+              57.5
+            ]
+          ]
+        },
+        {
+          "from": "network",
+          "to": "logs",
+          "label": "",
+          "kind": "data"
+        },
+        {
+          "from": "delay",
+          "to": "logs",
+          "label": "",
+          "kind": "control"
+        }
+      ]
+    },
+    {
+      "id": "electrical_topology",
+      "title": "Solar protection — overall feeder single-line architecture",
+      "subtitle": "Exact parent/child topology from study_config.m; branch protection annotated",
+      "scope": "Grounded utility and wye impedance loads; positive-sequence inverter injection limited to 1.20 pu phase current.",
+      "nodes": [
+        {
+          "id": "source",
+          "x": 3,
+          "y": 51,
+          "label": "Grounded utility source\n11 kV / 60 Hz\nThevenin Z1 / Z0",
+          "kind": "model"
+        },
+        {
+          "id": "bus1",
+          "x": 36,
+          "y": 51,
+          "label": "Bus 1\n0.8 MW + 0.20 Mvar load\nCommon feeder junction",
+          "kind": "model"
+        },
+        {
+          "id": "bus2",
+          "x": 69,
+          "y": 51,
+          "label": "Bus 2\n1.2 MW + 0.30 Mvar load",
+          "kind": "model"
+        },
+        {
+          "id": "bus4",
+          "x": 36,
+          "y": 30,
+          "label": "Bus 4\n1.4 MW + 0.35 Mvar load\nSeparate lateral",
+          "kind": "model"
+        },
+        {
+          "id": "bus3",
+          "x": 69,
+          "y": 30,
+          "label": "Bus 3\n1.6 MW + 0.40 Mvar load\nSolar connection point",
+          "kind": "model"
+        },
+        {
+          "id": "pv",
+          "x": 69,
+          "y": 9,
+          "label": "Solar inverter + intertie\n0–4 MW study range\nCurrent-limited contribution",
+          "kind": "model"
+        },
+        {
+          "id": "logic",
+          "x": 3,
+          "y": 9,
+          "label": "Protection coordination\nR1 backs up R2 / R4\nR2 backs up R3",
+          "kind": "control"
+        }
+      ],
+      "edges": [
+        {
+          "from": "source",
+          "to": "bus1",
+          "label": "B1 / R1",
+          "kind": "data"
+        },
+        {
+          "from": "bus1",
+          "to": "bus2",
+          "label": "B2 / R2",
+          "kind": "data"
+        },
+        {
+          "from": "bus1",
+          "to": "bus4",
+          "label": "B4 / R4",
+          "kind": "data"
+        },
+        {
+          "from": "bus2",
+          "to": "bus3",
+          "label": "B3 / R3",
+          "kind": "data"
+        },
+        {
+          "from": "pv",
+          "to": "bus3",
+          "label": "PV intertie",
+          "kind": "data"
+        },
+        {
+          "from": "logic",
+          "to": "pv",
+          "label": "PV transfer trip",
+          "kind": "control"
+        }
+      ]
+    }
+  ],
+  "source_commit": "b3ec976d06eb4f0c2d7b38c9034dca34712d856a"
+}

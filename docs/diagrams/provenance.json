@@ -1,0 +1,12 @@
+{
+  "source_commit": "b3ec976d06eb4f0c2d7b38c9034dca34712d856a",
+  "method": "Annotated source-derived block diagrams; not synthesized netlist or GUI screenshots",
+  "source_sha256": {
+    "src/study_config.m": "d284cbaf666bc9d9e6bd0b318ce66764e05549024982c7b85bd9a7ad410c429b",
+    "src/build_protection_model.m": "fc592f8a704aa906d9385eae0524e5b0a72b1e43033a23e59ec2203ff25fceaa",
+    "src/ProtectionRelay.m": "c922944f0082c5d00f263404b52b3e72b493910cc2a85ec35adb8c4fab632ec0",
+    "src/network_solve.m": "4e9ef18b463e75bc872973c8a389bfe4afa1001dfa3aee968a5c9689826b2477",
+    "src/coordinate_settings.m": "042ab511df72a98382cd87625183c67e4e8681ddd2210354413fcb13906ef58b",
+    "src/ProtectionBreakers.m": "ffe65f674c20796473d8043dacef97abb95bc50657b89bba476e8b82323858c0"
+  }
+}
